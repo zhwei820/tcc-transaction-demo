@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.pingpongx</groupId>
+  <artifactId>tcc-transaction-demo</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <modules>
+    <module>tcc-transaction-order</module>
+    <module>tcc-transaction-capital</module>
+    <module>tcc-transaction-capital-api</module>
+    <module>tcc-transaction-redpacket</module>
+    <module>tcc-transaction-redpacket-api</module>
+    <module>tcc-transaction-dal</module>
+    <module>tcc-transaction-order-api</module>
+  </modules>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.5.8.RELEASE</version>
+  </parent>
+
+  <properties>
+    <tcc.transaction.version>1.1.6.5</tcc.transaction.version>
+
+    <project.lombok.version>1.16.18</project.lombok.version>
+
+    <mybatis.plus.version>2.1.6</mybatis.plus.version>
+    <zkclient.version>0.10</zkclient.version>
+    <dubbo.version>2.5.8</dubbo.version>
+
+    <starter.mybatisplus.version>1.0.5</starter.mybatisplus.version>
+    <starter.dubbo.version>1.0.0</starter.dubbo.version>
+    <starter.druid.version>1.1.6</starter.druid.version>
+
+    <common.lang3.version>3.7</common.lang3.version>
+
+  </properties>
+
+
+  <dependencyManagement>
+    <dependencies>
+      <!--tcc begin -->
+      <dependency>
+        <groupId>org.mengyun</groupId>
+        <artifactId>tcc-transaction-api</artifactId>
+        <version>${tcc.transaction.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mengyun</groupId>
+        <artifactId>tcc-transaction-core</artifactId>
+        <version>${tcc.transaction.version}</version>
+      </dependency>
+      <!--tcc end -->
+
+      <!-- devtools begin -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${project.lombok.version}</version>
+      </dependency>
+      <!-- devtools end -->
+
+      <!--mybatis begin -->
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus</artifactId>
+        <version>${mybatis.plus.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatisplus-spring-boot-starter</artifactId>
+        <version>${starter.mybatisplus.version}</version>
+      </dependency>
+      <!--mybatis end -->
+
+      <!-- dubbo begin-->
+      <dependency>
+        <groupId>io.dubbo.springboot</groupId>
+        <artifactId>spring-boot-starter-dubbo</artifactId>
+        <version>${starter.dubbo.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>dubbo</artifactId>
+        <version>${dubbo.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.101tec</groupId>
+        <artifactId>zkclient</artifactId>
+        <version>${zkclient.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <!--dubbo end -->
+
+      <!--druid begin -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid-spring-boot-starter</artifactId>
+        <version>${starter.druid.version}</version>
+      </dependency>
+      <!--druid end -->
+
+      <!--common-lang3 begin -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${common.lang3.version}</version>
+      </dependency>
+      <!--common-lang3 end -->
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>

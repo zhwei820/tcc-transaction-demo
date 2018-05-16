@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pingpongx.tcctransaction.order.mapper.OrderMapper">
+    
+    <resultMap id="OrderMap" type="com.pingpongx.tcctransaction.order.domain.Order"></resultMap>
+
+    <insert id="insertBySelective">
+        insert into ord_order(PAYER_USER_ID,PAYEE_USER_ID,
+        RED_PACKET_PAY_AMOUNT,CAPITAL_PAY_AMOUNT,STATUS,MERCHANT_ORDER_NO) VALUES (#{payUserId},#{payeeUserId},
+        #{redPacketPayAmount},#{capitalPayAmount},#{status},#{merchantOrderNo})
+    </insert>
+
+    <update id="updateStatusByOrderNo" parameterType="com.pingpongx.tcctransaction.order.domain.Order">
+        update ord_order set status = #{status} WHERE merchant_order_no = #{merchantOrderNo}
+    </update>
+    
+</mapper>

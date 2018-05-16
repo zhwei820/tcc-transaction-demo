@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="INFO" monitorInterval="60">
+    
+    <!-- 定义常量s -->
+    <properties>
+        <property name="localhost_path">/data/project/ops-monitor/logs</property>
+    </properties>
+    
+    <!--先定义所有的appender-->
+
+    <Appenders>
+
+        <Console name="appender_console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%3p]--%m%n"/>
+        </Console>
+
+        <!-- 每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+        <RollingFile name="appender_info" fileName="${localhost_path}/info2/info.log"
+                     filePattern="${localhost_path}/$${date:yyyy-MM}/info2/info-%d{yyyy-MM-dd}-%i.log">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%3p]--%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+        </RollingFile>
+
+        <!-- 每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+        <RollingFile name="appender_warn" fileName="${localhost_path}/warn2/warn.log"
+                     filePattern="${localhost_path}/$${date:yyyy-MM}/warn2/warn-%d{yyyy-MM-dd}-%i.log">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%3p]--%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+        </RollingFile>
+
+        <!-- 每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+        <RollingFile name="appender_error" fileName="${localhost_path}/error2/error.html"
+                     filePattern="${localhost_path}/$${date:yyyy-MM}/error2/error-%d{yyyy-MM-dd}-%i.html">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            <HTMLLayout title="Error日志"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+        </RollingFile>
+
+    </Appenders>
+
+
+    <Loggers>
+        <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
+        <Logger name="com.alibaba.cobar.client" level="ERROR"></Logger>
+        <Logger name="com.alibaba.druid.pool" level="ERROR"></Logger>
+        
+        <Root level="INFO">
+            <AppenderRef ref="appender_console"/>
+            <AppenderRef ref="appender_info"/>
+            <AppenderRef ref="appender_warn"/>
+            <AppenderRef ref="appender_error"/>
+        </Root>
+    </Loggers>
+</Configuration>

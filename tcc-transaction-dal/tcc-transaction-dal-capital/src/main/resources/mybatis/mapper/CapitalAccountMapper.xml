@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pingpongx.tcctransaction.capital.mapper.CapitalAccountMapper">
+
+    <resultMap id="capitalAccountMap" type="com.pingpongx.tcctransaction.capital.domain.CapitalAccount"></resultMap>
+
+    <select id="findByUserId" parameterType="long" resultMap="capitalAccountMap">
+        select capital_account_id as id,user_id as userId,balance_amount as balanceAmount  from cap_capital_account WHERE user_id = #{selfUserId};
+    </select>
+
+    <update id="updateAmountByUserId" parameterType="com.pingpongx.tcctransaction.capital.domain.CapitalAccount">
+        UPDATE cap_capital_account set balance_amount = #{balanceAmount} where user_id = #{userId}
+    </update>
+    
+</mapper>

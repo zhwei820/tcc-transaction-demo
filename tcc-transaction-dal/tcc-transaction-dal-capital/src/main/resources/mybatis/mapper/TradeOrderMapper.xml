@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pingpongx.tcctransaction.capital.mapper.TradeOrderMapper">
+    
+    <resultMap id="TradeOrderMap" type="com.pingpongx.tcctransaction.capital.domain.TradeOrder"></resultMap>
+
+    <insert id="insertBySelective">
+        INSERT cap_trade_order(SELF_USER_ID,OPPOSITE_USER_ID,MERCHANT_ORDER_NO,AMOUNT,STATUS) VALUES (
+        #{selfUserId},#{oppositeUserId},#{merchantOrderNo},#{amount},#{status}
+        )
+    </insert>
+
+    <select id="findByMechantOrderNo" parameterType="java.lang.String" resultMap="TradeOrderMap">
+        select id as id,self_user_id as selfUserId,opposite_user_id as oppositeUserId,
+         merchant_order_no as merchantOrderNo,amount as amount,status as status
+         from cap_trade_order where MERCHANT_ORDER_NO = #{merchantOrderNo}
+    </select>
+
+    <update id="updateStatusByOrderNo" parameterType="com.pingpongx.tcctransaction.capital.domain.TradeOrder">
+        UPDATE cap_trade_order set status = #{status} WHERE MERCHANT_ORDER_NO = #{merchantOrderNo}
+    </update>
+    
+</mapper>

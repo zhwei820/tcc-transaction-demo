@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>tcc-transaction-demo</artifactId>
+    <groupId>com.pingpongx</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>war</packaging>
+
+  <artifactId>tcc-transaction-redpacket</artifactId>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.mengyun</groupId>
+      <artifactId>tcc-transaction-spring</artifactId>
+      <version>1.2.4.20</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.pingpongx</groupId>
+      <artifactId>tcc-transaction-redpacket-api</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.pingpongx</groupId>
+      <artifactId>tcc-transaction-dal-redpacket</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <!-- spring boot starter begin-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-log4j2</artifactId>
+    </dependency>
+    <!-- spring boot stater end-->
+
+    <dependency>
+      <groupId>io.dubbo.springboot</groupId>
+      <artifactId>spring-boot-starter-dubbo</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>dubbo</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.101tec</groupId>
+      <artifactId>zkclient</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid-spring-boot-starter</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>tcc-transaction-redpacket</finalName>
+    <!-- 开启maven的资源过滤 -->
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <!-- 制定profile打包的时候为 utf-8，不然会有乱码问题。 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <delimiters>
+            <delimiter>@</delimiter>
+          </delimiters>
+          <useDefaultDelimiters>false</useDefaultDelimiters>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <!-- 要使用maven的profile机制的话需要覆盖maven的默认war插件，需要制定下不同的配置文件复制。 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.1.1</version>
+        <!--<configuration>
+            <webResources>
+                <resource>
+                    <directory>${configPath}</directory>
+                    <targetPath>WEB-INF/classes</targetPath>
+                </resource>
+            </webResources>
+        </configuration>-->
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <useSystemClassLoader>false</useSystemClassLoader>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <url>http://pingpongx.com</url>
+          <port>8080</port>
+          <path>/</path>
+          <uriEncoding>utf-8</uriEncoding>
+          <systemProperties>
+            <JAVA_OPTS>-Xms128m -Xmx512m</JAVA_OPTS>
+          </systemProperties>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+
+    <profile>
+      <id>dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <ppx.environment>dev</ppx.environment>
+      </properties>
+      <build>
+        <!-- 告诉资源过滤该从哪个文件读取key-value值去进行资源替换(${}) -->
+        <filters>
+          <filter>src/main/resources/profile/dev.properties</filter>
+        </filters>
+      </build>
+    </profile>
+
+    <profile>
+      <id>test</id>
+      <properties>
+        <ppx.environment>test</ppx.environment>
+      </properties>
+      <build>
+        <!-- 告诉资源过滤该从哪个文件读取key-value值去进行资源替换(${}) -->
+        <filters>
+          <filter>src/main/resources/profile/test.properties</filter>
+        </filters>
+      </build>
+    </profile>
+
+    <profile>
+      <id>production</id>
+      <properties>
+        <ppx.environment>production</ppx.environment>
+      </properties>
+      <build>
+        <filters>
+          <filter>src/main/resources/profile/production.properties</filter>
+        </filters>
+      </build>
+    </profile>
+
+  </profiles>
+
+
+</project>
